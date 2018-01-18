@@ -2,7 +2,6 @@
   include_once 'header.php';
  ?>
 
-<!-- test -->
 <section class="main-container">
   <div class="main-wrapper">
     <h2>Sign Up</h2>
