@@ -2,6 +2,7 @@
   include_once 'header.php';
  ?>
 
+<!-- test -->
 <section class="main-container">
   <div class="main-wrapper">
     <h2>Home</h2>
