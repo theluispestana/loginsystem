@@ -36,7 +36,7 @@ if(isset($_POST['submit'])) {
           // Hashing the Password
           $hashedPwd = password_hash($pwd, PASSWORD_DEFAULT);
           // Insert the user into the database
-          $sql = "INSERT INTO users (user_first, user_last, user_email, user_uid, user_pwd) VALUES ('$first', '$last', '$email', '$uid', '$hashedpwd');";
+          $sql = "INSERT INTO users (user_first, user_last, user_email, user_uid, user_pwd) VALUES ('$first', '$last', '$email', '$uid', '$hashedPwd');";
           // line with mysqli_query can be written with or without a variable
           mysqli_query($conn, $sql);
           header("Location: ../signup.php?signup=success");
