@@ -25,9 +25,19 @@ if (isset($_POST['submit'])) {
                 header("Location: ../signup.php?signup=email");
                 exit();
             } else {
-                $sql = "SELECT * FROM users WHERE user_uid='$uid'";
-                $result = mysqli_query($conn, $sql);
-                $resultCheck = mysqli_num_rows($result);
+                //Creating prepared statement
+                $sql = "SELECT * FROM users WHERE user_uid=?";
+                $stmt = mysqli_stmt_init($conn);
+                if (!mysqli_stmt_prepare($stmt, $sql)) {
+                  echo "SQL statement failed";
+                } else {
+                  //bind parameters to the placeholder
+                  mysqli_stmt_bind_param($stmt, "s", $uid);
+                  //run parameters inside database
+                  mysqli_stmt_execute($stmt);
+                  $result = mysqli_stmt_get_result($stmt);
+                }
+                $resultCheck = mysqli_stmt_num_rows($result);
 
                 if ($resultCheck > 0) {
                     header("Location: ../signup.php?signup=usertaken");
@@ -36,7 +46,20 @@ if (isset($_POST['submit'])) {
                     // Hashing the Password
                     $hashedPwd = password_hash($pwd, PASSWORD_DEFAULT);
                     // Insert the user into the database
-                    $sql = "INSERT INTO users (user_first, user_last, user_email, user_uid, user_pwd) VALUES ('$first', '$last', '$email', '$uid', '$hashedPwd');";
+                    // $sql = "INSERT INTO users (user_first, user_last, user_email, user_uid, user_pwd) VALUES ('$first', '$last', '$email', '$uid', '$hashedPwd');";
+                    // Using prepared statement to insert sql code
+                    $sql = "INSERT INTO users (user_first, user_last, user_email, user_uid, user_pwd) VALUES (?, ?, ?, ?, ?);";
+                    $stmt = mysqli_stmt_init($conn);
+                    if (!mysqli_stmt_prepare($stmt, $sql)) {
+                      echo "SQL statement failed";
+                    } else {
+                      //bind parameters to the placeholder
+                      mysqli_stmt_bind_param($stmt, "sssss", $first, $last, $email, $uid, $pwd);
+                      //run parameters inside database
+                      mysqli_stmt_execute($stmt);
+                      // $result = mysqli_stmt_get_result($stmt);
+                    }
+
                     // line with mysqli_query can be written with or without a variable
                     mysqli_query($conn, $sql);
                     header("Location: ../signup.php?signup=success");
