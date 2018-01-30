@@ -15,9 +15,20 @@ if (isset($_POST['submit'])) {
         header("Location: ../index.php?login=empty");
         exit();
     } else {
-        $sql = "SELECT * FROM users WHERE user_uid='$uid'";
-        $result = mysqli_query($conn, $sql);
-        $resultCheck = mysqli_num_rows($result);
+        $sql = "SELECT * FROM users WHERE user_uid=?";
+        $stmt = mysqli_stmt_init($conn);
+        if (!mysqli_stmt_prepare($stmt, $sql)) {
+          echo "SQL statement failed";
+        } else {
+          //bind parameters to the placeholder
+          mysqli_stmt_bind_param($stmt, "s", $uid);
+          //run parameters inside database
+          mysqli_stmt_execute($stmt);
+          $result = mysqli_stmt_get_result($stmt);
+        }
+        $resultCheck = mysqli_stmt_num_rows($result);
+        // $result = mysqli_query($conn, $sql);
+        // $resultCheck = mysqli_num_rows($result);
         if ($resultCheck < 1) {
             header("Location: ../index.php?login=error");
             exit();

@@ -54,7 +54,7 @@ if (isset($_POST['submit'])) {
                       echo "SQL statement failed";
                     } else {
                       //bind parameters to the placeholder
-                      mysqli_stmt_bind_param($stmt, "sssss", $first, $last, $email, $uid, $pwd);
+                      mysqli_stmt_bind_param($stmt, "sssss", $first, $last, $email, $uid, $hashedPwd);
                       //run parameters inside database
                       mysqli_stmt_execute($stmt);
                       // $result = mysqli_stmt_get_result($stmt);
